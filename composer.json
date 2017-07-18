@@ -1,6 +1,6 @@
 {
   "name": "geniv/nette-prtpe",
-  "description": "Newsletter MailerLite service",
+  "description": "PRTPE extension for Nette Framework",
   "keywords": [
     "nette",
     "prtpe",
