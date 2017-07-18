@@ -52,19 +52,19 @@ $this->prtpe->isTestMode(); // : bool
 $this->prtpe->getStatus($checkoutId); // : Response
 
 // new credit card
-$card = new Card($values->number, $values->holder, $values->expiryMonth, $values->expiryYear, $values->cvv);    // : Card
+$card = new Card($number, $holder, $expiryMonth, $expiryYear, $cvv);    // : Card
 
 // set part custom descriptor
-$prtpe = $this->prtpe->setDescriptor('vs: XXXYYY');
+$prtpe = $this->prtpe->setDescriptor('vs: XXXYYY'); // : Prtpe
 
 // send payment
-$pay = $prtpe->payment($card, $price, 'VISA', $currency);   // : Response
+$pay = $prtpe->payment($card, $price, 'VISA', $currency); // : Response
 
 // recurect payment, first store card, in result response is ID registration ID
 $this->prtpe->storePaymentData($card); // : Response
 
 // recurent payment, delete payment
-$prtpe->deleteStorePaymentData($idRegistration) : Response;
+$prtpe->deleteStorePaymentData($idRegistration); // : Response;
 
 // recurent payment, send payment
 $prtpe->sendRepeatedPayment($idRegistration, $price,'VISA', $currency); // : Response
