@@ -25,6 +25,7 @@ Include in application
 ----------------------
 neon configure:
 ```neon
+# prtpe
 prtpe:
     entityId: 'xxx'
     password: 'yyy'
