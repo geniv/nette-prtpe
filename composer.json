@@ -1,0 +1,26 @@
+{
+  "name": "geniv/nette-prtpe",
+  "description": "Newsletter MailerLite service",
+  "keywords": [
+    "nette",
+    "prtpe",
+    "payment",
+    "geniv"
+  ],
+  "license": "GPL-3.0",
+  "authors": [
+    {
+      "name": "Radek Fryšták",
+      "email": "geniv.radek@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.6.0",
+    "curl/curl": "^1.6"
+  },
+  "autoload": {
+    "classmap": [
+      "src/"
+    ]
+  }
+}
