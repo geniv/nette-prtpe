@@ -1,0 +1,26 @@
+{
+  "name": "geniv/nette-translator",
+  "description": "Newsletter MailerLite service",
+  "keywords": [
+    "nette",
+    "newsletter",
+    "mailerlite",
+    "geniv"
+  ],
+  "license": "GPL-3.0",
+  "authors": [
+    {
+      "name": "Radek Fryšták",
+      "email": "geniv.radek@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.6.0",
+    "mailerlite/mailerlite-api-v2-php-sdk": ">=0.2.1"
+  },
+  "autoload": {
+    "classmap": [
+      "src/"
+    ]
+  }
+}
