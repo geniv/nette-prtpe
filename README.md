@@ -49,9 +49,32 @@ $prtpe->setTest(true|false) : void
 
 // is test mode?
 $prtpe->isTestMode() : bool
+```
 
+COPY&PAY.
+---------
+```php
+// get detail checkout
+$pay = $prtpe->getStatusCheckout($resourcePath) : Response
+
+// send checkout
+$prtpe->checkout($price, 'VISA', $currency) : Response;
+
+
+$prtpe->getPaymentWidgetsScript($checkoutId) : string;
+
+$prtpe->getPaymentWidgetsForm($shopperResultUrl, ['VISA', 'MASTER']) : string;
+```
+
+Customization: https://docs.prtpe.com/tutorials/integration-guide/customisation
+
+Advanced Options: https://docs.prtpe.com/tutorials/integration-guide/advanced-options
+
+Server-to-Server.
+-----------------
+```php
 // get detail payment
-$pay = $prtpe->getStatus($checkoutId) : Response
+$pay = $prtpe->getStatusPayment($checkoutId) : Response
 
 // new credit card
 $card = new Card($number, $holder, $expiryMonth, $expiryYear, $cvv) : Card
@@ -61,6 +84,8 @@ $prtpe = $prtpe->setDescriptor('vs: XXXYYY') : Prtpe
 
 // send payment
 $pay = $prtpe->payment($card, $price, 'VISA', $currency) : Response
+
+// recurent payment
 
 // recurect payment, first store card, in result response is ID registration ID
 $pay = $prtpe->storePaymentData($card) : Response
