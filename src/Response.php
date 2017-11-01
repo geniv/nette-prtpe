@@ -74,17 +74,6 @@ class Response
 
 
     /**
-     * Get checkout id.
-     *
-     * @return mixed
-     */
-    public function getCheckoutId()
-    {
-        return $this->response['id'];
-    }
-
-
-    /**
      * Get response id.
      *
      * @return int

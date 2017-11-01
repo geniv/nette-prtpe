@@ -113,17 +113,6 @@ class Prtpe
 
 
     /**
-     * Get store payment.
-     *
-     * @return array
-     */
-    private function getStorePayment()
-    {
-        return ($this->createRegistration ? ['createRegistration' => true] : []);
-    }
-
-
-    /**
      * Set store payment.
      *
      * @param $state
@@ -133,6 +122,17 @@ class Prtpe
     {
         $this->createRegistration = $state;
         return $this;
+    }
+
+
+    /**
+     * Get store payment.
+     *
+     * @return array
+     */
+    private function getStorePayment()
+    {
+        return ($this->createRegistration ? ['createRegistration' => true] : []);
     }
 
 
@@ -176,36 +176,6 @@ class Prtpe
 
 
     /**
-     * Get payment widget script.
-     *
-     * https://docs.prtpe.com/tutorials/integration-guide/customisation
-     * https://docs.prtpe.com/tutorials/integration-guide/advanced-options
-     *
-     * @param $checkoutId
-     * @return string
-     */
-    public function getPaymentWidgetsScript($checkoutId)
-    {
-        $url = ($this->testMode ? self::TEST : self::LIVE);
-        return '<script src="' . $url . 'v1/paymentWidgets.js?checkoutId=' . $checkoutId . '"></script>';
-    }
-
-
-    /**
-     * Get payment widgets form.
-     *
-     * @param       $shopperResultUrl
-     * @param array $brands
-     * @return string
-     */
-    public function getPaymentWidgetsForm($shopperResultUrl, $brands = ['VISA', 'MASTER'])
-    {
-        $dataBrand = implode(' ', $brands);
-        return '<form action="' . $shopperResultUrl . '" class="paymentWidgets" data-brands="' . $dataBrand . '"></form>';
-    }
-
-
-    /**
      * Checkout.
      * COPY&PAY.
      *
@@ -229,6 +199,36 @@ class Prtpe
             $this->getRegistrations()
         );
         return new Response($curl);
+    }
+
+
+    /**
+     * Get payment widget script.
+     *
+     * @param $checkoutId
+     * @return string
+     */
+    public function getPaymentWidgetsScript($checkoutId)
+    {
+        $url = ($this->testMode ? self::TEST : self::LIVE);
+        return '<script src="' . $url . 'v1/paymentWidgets.js?checkoutId=' . $checkoutId . '"></script>';
+    }
+
+
+    /**
+     * Get payment widgets form.
+     *
+     * https://docs.prtpe.com/tutorials/integration-guide/customisation
+     * https://docs.prtpe.com/tutorials/integration-guide/advanced-options
+     *
+     * @param       $shopperResultUrl
+     * @param array $brands
+     * @return string
+     */
+    public function getPaymentWidgetsForm($shopperResultUrl, $brands = ['VISA', 'MASTER'])
+    {
+        $dataBrand = implode(' ', $brands);
+        return '<form action="' . $shopperResultUrl . '" class="paymentWidgets" data-brands="' . $dataBrand . '"></form>';
     }
 
 
@@ -297,7 +297,29 @@ class Prtpe
 
 
     /**
+     * Store data for recurring payment.
+     *
+     * @param Card   $card
+     * @param string $paymentBrand
+     * @return Response
+     */
+    public function storePaymentData(Card $card, $paymentBrand = 'VISA')
+    {
+        $curl = $this->initCurl();
+        $url = ($this->testMode ? self::TEST : self::LIVE) . 'v1/registrations';
+        $curl->post($url, [
+                'paymentBrand' => $paymentBrand,
+            ] +
+            $card->toArray() +
+            $this->getAuthentication()
+        );
+        return new Response($curl);
+    }
+
+
+    /**
      * Recurring payment.
+     *
      * COPY&PAY & Server-to-Server.
      */
 
@@ -324,27 +346,6 @@ class Prtpe
                 'recurringType' => 'REPEATED',
             ] +
             $this->getDescriptor() +
-            $this->getAuthentication()
-        );
-        return new Response($curl);
-    }
-
-
-    /**
-     * Store data for recurring payment.
-     *
-     * @param Card   $card
-     * @param string $paymentBrand
-     * @return Response
-     */
-    public function storePaymentData(Card $card, $paymentBrand = 'VISA')
-    {
-        $curl = $this->initCurl();
-        $url = ($this->testMode ? self::TEST : self::LIVE) . 'v1/registrations';
-        $curl->post($url, [
-                'paymentBrand' => $paymentBrand,
-            ] +
-            $card->toArray() +
             $this->getAuthentication()
         );
         return new Response($curl);
