@@ -16,8 +16,10 @@ use Exception;
  */
 class Response
 {
+    /** @var Curl */
+    private $curl;
     private $response;
-    private $resultCore;
+    private $resultCode;
 
 
     /**
@@ -28,24 +30,46 @@ class Response
      */
     public function __construct(Curl $curl)
     {
+        $this->curl = $curl;
+
         $this->response = json_decode($curl->response, true);
-        $this->resultCore = $this->response['result']['code'];
+        $this->resultCode = $this->response['result']['code'];
 
         if ($curl->isError()) {
-            throw new Exception($this->response['result']['description'], null, new Exception($curl->error_message, $curl->error_code));
+            $ex = new Exception($curl->error_message, $curl->error_code);
+            if (isset($this->response['result']['parameterErrors'])) {
+                foreach ($this->response['result']['parameterErrors'] as $error) {
+                    $ex = new Exception($error['name'] . ' value: "' . $error['value'] . '" ' . $error['message'], null, $ex);
+                }
+            }
+            throw new Exception($this->response['result']['description'], null, $ex);
         }
         $curl->close();
     }
 
 
     /**
-     * Is success payment.
+     * Is success.
      *
      * @return bool
      */
     public function isSuccess()
     {
-        return preg_match('/^(000\.000\.|000\.100\.1|000\.[36])/', $this->resultCore);
+        if ($this->curl->isSuccess()) {
+            return (preg_match('/^(000\.200)/', $this->resultCode) || preg_match('/^(000\.000\.|000\.100\.1|000\.[36])/', $this->resultCode));
+        }
+        return false;
+    }
+
+
+    /**
+     * Get result code.
+     *
+     * @return mixed
+     */
+    public function getResultCode()
+    {
+        return $this->resultCode;
     }
 
 
@@ -61,16 +85,32 @@ class Response
 
 
     /**
+     * Get registration id.
+     *
+     * @return null
+     */
+    public function getRegistrationId()
+    {
+        return (isset($this->response['registrationId']) ? $this->response['registrationId'] : null);
+    }
+
+
+    /**
      * Get response result.
      *
      * @param null $index
+     * @param null $timeZone
      * @return mixed
      */
-    public function getResult($index = null)
+    public function getResult($index = null, $timeZone = null)
     {
         $result = $this->response;
+        if (!$timeZone) {
+            $timeZone = date_default_timezone_get();
+        }
+
         // convert to system timezone
-        $result['timestamp'] = (new DateTime($result['timestamp']))->setTimezone(new DateTimeZone(date_default_timezone_get()));
+        $result['timestamp'] = (new DateTime($result['timestamp']))->setTimezone(new DateTimeZone($timeZone));
 
         if ($index) {
             if (isset($result[$index])) {
