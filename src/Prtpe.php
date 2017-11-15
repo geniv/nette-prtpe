@@ -334,7 +334,7 @@ class Prtpe
      * @param string $paymentType
      * @return Response
      */
-    public function sendRepeatedPayment($registrationId, $amount, $paymentBrand = 'VISA', $currency = 'EUR', $paymentType = 'PA')
+    public function sendRepeatedPayment($registrationId, $amount, $paymentBrand = 'VISA', $currency = 'EUR', $paymentType = 'DB')
     {
         $curl = $this->initCurl();
         $url = ($this->testMode ? self::TEST : self::LIVE) . 'v1/registrations/' . $registrationId . '/payments';
