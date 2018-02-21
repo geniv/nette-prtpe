@@ -38,7 +38,7 @@ class Card
 
 
     /**
-     * Convert to array.
+     * To array.
      *
      * @return array
      */
