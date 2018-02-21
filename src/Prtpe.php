@@ -180,13 +180,16 @@ class Prtpe
      * Checkout.
      * COPY&PAY.
      *
-     * @param        $amount
-     * @param string $currency
-     * @param string $paymentType
+     * @param          $amount
+     * @param string   $currency
+     * @param string   $paymentType
+     * @param Customer $customer
+     * @param Billing  $billing
      * @return Response
+     * @throws \ErrorException
      * @throws \Exception
      */
-    public function checkout($amount, $currency = 'EUR', $paymentType = 'DB')
+    public function checkout($amount, $currency = 'EUR', $paymentType = 'DB', Customer $customer, Billing $billing)
     {
         $curl = $this->initCurl();
         $url = ($this->testMode ? self::TEST : self::LIVE) . 'v1/checkouts';
@@ -198,7 +201,9 @@ class Prtpe
             $this->getDescriptor() +
             $this->getAuthentication() +
             $this->getStorePayment() +
-            $this->getRegistrations()
+            $this->getRegistrations() +
+            $customer->toArray() +
+            $billing->toArray()
         );
         return new Response($curl);
     }
