@@ -62,6 +62,7 @@ class Prtpe
      * Internal init curl.
      *
      * @return Curl
+     * @throws \ErrorException
      */
     private function initCurl()
     {
@@ -183,6 +184,7 @@ class Prtpe
      * @param string $currency
      * @param string $paymentType
      * @return Response
+     * @throws \Exception
      */
     public function checkout($amount, $currency = 'EUR', $paymentType = 'DB')
     {
@@ -237,6 +239,7 @@ class Prtpe
      *
      * @param $resourcePath
      * @return Response
+     * @throws \Exception
      */
     public function getStatusCheckout($resourcePath)
     {
@@ -262,6 +265,7 @@ class Prtpe
      * @param string $currency
      * @param string $paymentType
      * @return Response
+     * @throws \Exception
      */
     public function payment(Card $card, $amount, $paymentBrand = 'VISA', $currency = 'EUR', $paymentType = 'DB')
     {
@@ -286,6 +290,7 @@ class Prtpe
      *
      * @param $checkoutId
      * @return Response
+     * @throws \Exception
      */
     public function getStatusPayment($checkoutId)
     {
@@ -302,6 +307,7 @@ class Prtpe
      * @param Card   $card
      * @param string $paymentBrand
      * @return Response
+     * @throws \Exception
      */
     public function storePaymentData(Card $card, $paymentBrand = 'VISA')
     {
@@ -333,6 +339,7 @@ class Prtpe
      * @param string $currency
      * @param string $paymentType
      * @return Response
+     * @throws \Exception
      */
     public function sendRepeatedPayment($registrationId, $amount, $paymentBrand = 'VISA', $currency = 'EUR', $paymentType = 'DB')
     {
@@ -357,6 +364,7 @@ class Prtpe
      *
      * @param $registrationId
      * @return Response
+     * @throws \Exception
      */
     public function deleteStorePaymentData($registrationId)
     {
