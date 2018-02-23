@@ -13,14 +13,23 @@ use Curl\Curl;
  */
 class Prtpe
 {
-    private $parameters = [];
-    private $testMode = false;
-    private $descriptor = null;
-    private $createRegistration = false;
-    private $registrations = [];
     /** hosts */
-    const TEST = 'https://test.prtpe.com/';
-    const LIVE = 'https://prtpe.com/';
+    const
+        TEST = 'https://test.prtpe.com/',
+        LIVE = 'https://prtpe.com/';
+
+    /** @var array */
+    private $parameters = [];
+    /** @var bool */
+    private $testMode = false;
+    /** @var null */
+    private $descriptor = null;
+    /** @var bool */
+    private $createRegistration = false;
+    /** @var array */
+    private $registrations = [];
+    /** @var array */
+    private $postParameter = [];
 
 
     /**
@@ -177,6 +186,18 @@ class Prtpe
 
 
     /**
+     * Add post parameter.
+     *
+     * @param $key
+     * @param $value
+     */
+    public function addPostParameter($key, $value)
+    {
+        $this->postParameter[$key] = $value;
+    }
+
+
+    /**
      * Checkout.
      * COPY&PAY.
      *
@@ -203,7 +224,8 @@ class Prtpe
             $this->getStorePayment() +
             $this->getRegistrations() +
             $customer->toArray() +
-            $billing->toArray()
+            $billing->toArray() +
+            $this->postParameter
         );
         return new Response($curl);
     }
@@ -285,6 +307,7 @@ class Prtpe
             $card->toArray() +
             $this->getDescriptor() +
             $this->getAuthentication()
+//            + $this->postParameter
         );
         return new Response($curl);
     }
@@ -323,6 +346,7 @@ class Prtpe
             ] +
             $card->toArray() +
             $this->getAuthentication()
+//            + $this->postParameter
         );
         return new Response($curl);
     }
@@ -359,6 +383,7 @@ class Prtpe
             ] +
             $this->getDescriptor() +
             $this->getAuthentication()
+//            + $this->postParameter
         );
         return new Response($curl);
     }
