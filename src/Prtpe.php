@@ -380,6 +380,7 @@ class Prtpe
                 'paymentBrand'  => $paymentBrand,
                 'paymentType'   => $paymentType,
                 'recurringType' => 'REPEATED',
+                //                'registrations[0].id' => $registrationId,
             ] +
             $this->getDescriptor() +
             $this->getAuthentication()
