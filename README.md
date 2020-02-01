@@ -4,6 +4,8 @@ PRTPE payment gateway
 
 API: https://docs.prtpe.com/
 
+Account: https://4cash.eu/live/
+
 Installation
 ------------
 
